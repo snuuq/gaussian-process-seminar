@@ -1,0 +1,187 @@
+@ARTICLE{Hollmann2022-op,
+  title        = {{TabPFN}: A Transformer that solves small tabular
+                  classification problems in a second},
+  author       = {Hollmann, Noah and Müller, Samuel and Eggensperger, Katharina
+                  and Hutter, Frank},
+  journaltitle = {arXiv [cs.LG]},
+  date         = {2022-07-05},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.LG},
+  abstract     = {We present TabPFN, a trained Transformer that can do
+                  supervised classification for small tabular datasets in less
+                  than a second, needs no hyperparameter tuning and is
+                  competitive with state-of-the-art classification methods.
+                  TabPFN performs in-context learning (ICL), it learns to make
+                  predictions using sequences of labeled examples (x, f(x))
+                  given in the input, without requiring further parameter
+                  updates. TabPFN is fully entailed in the weights of our
+                  network, which accepts training and test samples as a
+                  set-valued input and yields predictions for the entire test
+                  set in a single forward pass. TabPFN is a Prior-Data Fitted
+                  Network (PFN) and is trained offline once, to approximate
+                  Bayesian inference on synthetic datasets drawn from our prior.
+                  This prior incorporates ideas from causal reasoning: It
+                  entails a large space of structural causal models with a
+                  preference for simple structures. On the 18 datasets in the
+                  OpenML-CC18 suite that contain up to 1 000 training data
+                  points, up to 100 purely numerical features without missing
+                  values, and up to 10 classes, we show that our method clearly
+                  outperforms boosted trees and performs on par with complex
+                  state-of-the-art AutoML systems with up to 230$\times$
+                  speedup. This increases to a 5 700$\times$ speedup when using
+                  a GPU. We also validate these results on an additional 67
+                  small numerical datasets from OpenML. We provide all our code,
+                  the trained TabPFN, an interactive browser demo and a Colab
+                  notebook at https://github.com/automl/TabPFN.}
+}
+
+@ARTICLE{Hollmann2025-pr,
+  title        = {Accurate predictions on small data with a tabular foundation
+                  model},
+  author       = {Hollmann, Noah and Müller, Samuel and Purucker, Lennart and
+                  Krishnakumar, Arjun and Körfer, Max and Hoo, Shi Bin and
+                  Schirrmeister, Robin Tibor and Hutter, Frank},
+  journaltitle = {Nature},
+  publisher    = {Springer Science and Business Media LLC},
+  volume       = {637},
+  issue        = {8045},
+  pages        = {319--326},
+  date         = {2025-01},
+  abstract     = {Tabular data, spreadsheets organized in rows and columns, are
+                  ubiquitous across scientific fields, from biomedicine to
+                  particle physics to economics and climate science1,2. The
+                  fundamental prediction task of filling in missing values of a
+                  label column based on the rest of the columns is essential for
+                  various applications as diverse as biomedical risk models,
+                  drug discovery and materials science. Although deep learning
+                  has revolutionized learning from raw data and led to numerous
+                  high-profile success stories3-5, gradient-boosted decision
+                  trees6-9 have dominated tabular data for the past 20 years.
+                  Here we present the Tabular Prior-data Fitted Network
+                  (TabPFN), a tabular foundation model that outperforms all
+                  previous methods on datasets with up to 10,000 samples by a
+                  wide margin, using substantially less training time. In 2.8 s,
+                  TabPFN outperforms an ensemble of the strongest baselines
+                  tuned for 4 h in a classification setting. As a generative
+                  transformer-based foundation model, this model also allows
+                  fine-tuning, data generation, density estimation and learning
+                  reusable embeddings. TabPFN is a learning algorithm that is
+                  itself learned across millions of synthetic datasets,
+                  demonstrating the power of this approach for algorithm
+                  development. By improving modelling abilities across diverse
+                  fields, TabPFN has the potential to accelerate scientific
+                  discovery and enhance important decision-making in various
+                  domains.},
+  language     = {en}
+}
+
+@ARTICLE{Ye2025-ef,
+  title        = {A closer look at {TabPFN} {v2}: Understanding its strengths
+                  and extending its capabilities},
+  author       = {Ye, Han-Jia and Liu, Si-Yang and Chao, Wei-Lun},
+  journaltitle = {arXiv [cs.LG]},
+  date         = {2025-02-24},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.LG},
+  abstract     = {Tabular datasets are inherently heterogeneous, presenting
+                  significant challenges for developing pre-trained foundation
+                  models. The recently introduced transformer-based Tabular
+                  Prior-data Fitted Network v2 (TabPFN v2) achieves
+                  unprecedented in-context learning performance across diverse
+                  downstream datasets, marking a pivotal advancement in tabular
+                  foundation models. In this paper, we take a closer look at
+                  TabPFN v2 to examine how it effectively handles heterogeneity
+                  and achieves high predictive accuracy, and to explore how its
+                  limitations in high-dimensional, many-category, and
+                  large-scale tasks can be mitigated. We find that TabPFN v2 can
+                  infer attribute relationships even when provided with
+                  randomized attribute token inputs, eliminating the need to
+                  explicitly learn dataset-specific attribute embeddings to
+                  address heterogeneity. We further show that TabPFN v2 can be
+                  transformed into a feature extractor, revealing its ability to
+                  construct a highly separable feature space for accurate
+                  predictions. Lastly, we demonstrate that TabPFN v2's
+                  limitations can be addressed through a test-time
+                  divide-and-conquer strategy, enabling scalable inference
+                  without requiring re-training. By uncovering the mechanisms
+                  behind TabPFN v2's success and introducing strategies to
+                  extend its applicability, this study offers key insights into
+                  the design of future tabular foundation models.}
+}
+
+@ARTICLE{Shwartz-Ziv2021-mo,
+  title        = {Tabular data: Deep learning is not all you need},
+  author       = {Shwartz-Ziv, Ravid and Armon, Amitai},
+  journaltitle = {arXiv [cs.LG]},
+  date         = {2021-06-06},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.LG},
+  abstract     = {A key element in solving real-life data science problems is
+                  selecting the types of models to use. Tree ensemble models
+                  (such as XGBoost) are usually recommended for classification
+                  and regression problems with tabular data. However, several
+                  deep learning models for tabular data have recently been
+                  proposed, claiming to outperform XGBoost for some use cases.
+                  This paper explores whether these deep models should be a
+                  recommended option for tabular data by rigorously comparing
+                  the new deep models to XGBoost on various datasets. In
+                  addition to systematically comparing their performance, we
+                  consider the tuning and computation they require. Our study
+                  shows that XGBoost outperforms these deep models across the
+                  datasets, including the datasets used in the papers that
+                  proposed the deep models. We also demonstrate that XGBoost
+                  requires much less tuning. On the positive side, we show that
+                  an ensemble of deep models and XGBoost performs better on
+                  these datasets than XGBoost alone.}
+}
+
+@ARTICLE{Grinsztajn2022-fl,
+  title        = {Why do tree-based models still outperform deep learning on
+                  typical tabular data?},
+  author       = {Grinsztajn, Léo and Oyallon, Edouard and Varoquaux, G},
+  editor       = {Koyejo, S and Mohamed, S and Agarwal, A and Belgrave, D and
+                  Cho, K and Oh, A},
+  journaltitle = {Neural Inf Process Syst},
+  publisher    = {Curran Associates, Inc.},
+  volume       = {35},
+  pages        = {507--520},
+  date         = {2022}
+}
+
+@ARTICLE{Hoo2025-dm,
+  title        = {From tables to time: How {TabPFN}-{v2} outperforms specialized
+                  time series forecasting models},
+  author       = {Hoo, Shi Bin and Müller, Samuel and Salinas, David and Hutter,
+                  Frank},
+  journaltitle = {arXiv [cs.LG]},
+  date         = {2025-01-06},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.LG},
+  abstract     = {Foundation models have become increasingly popular for
+                  forecasting due to their ability to provide predictions
+                  without requiring a lot of training data. In this work, we
+                  demonstrate how TabPFN-v2, a general tabular foundation model,
+                  can be effectively applied to time series forecasting. We
+                  introduce TabPFN-TS, a simple method that combines TabPFN-v2
+                  with lightweight feature engineering to enable both point and
+                  probabilistic forecasting. Despite its simplicity and compact
+                  size (11M parameters), TabPFN-TS achieves top rank on the
+                  public GIFT-Eval leaderboard in both forecasting tasks.
+                  Through ablation studies, we investigate factors contributing
+                  to this surprising effectiveness, especially considering
+                  TabPFN-v2 was pretrained solely on synthetic tabular data with
+                  no exposure to time series. Our results highlights the
+                  potential of tabular foundation models like TabPFN-v2 as a
+                  valuable new approach for time series forecasting. Our
+                  implementation is available at
+                  https://github.com/PriorLabs/tabpfn-time-series.}
+}
+
+@article{ansari2024chronos,
+  author  = {Ansari, Abdul Fatir and Stella, Lorenzo and Turkmen, Caner and Zhang, Xiyuan and Mercado, Pedro and Shen, Huibin and Shchur, Oleksandr and Rangapuram, Syama Syndar and Pineda Arango, Sebastian and Kapoor, Shubham and Zschiegner, Jasper and Maddix, Danielle C. and Wang, Hao and Mahoney, Michael W. and Torkkola, Kari and Gordon Wilson, Andrew and Bohlke-Schneider, Michael and Wang, Yuyang},
+  title   = {Chronos: Learning the Language of Time Series},
+  journal = {arXiv preprint arXiv:2403.07815},
+  year    = {2024}
+}
+
+

@@ -1,0 +1,120 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage{fancyhdr}
+\usepackage[left=2cm, right=2cm, top=3cm, bottom=3cm]{geometry}
+% \usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{kotex}
+
+\usepackage{hyperref}
+\definecolor{links}{rgb}{0.36,0.54,0.66}
+\hypersetup{
+   colorlinks = true,
+    linkcolor = black,
+     urlcolor = blue,
+    citecolor = blue,
+    filecolor = blue,
+    pdfauthor = {Author},
+     pdftitle = {Title},
+   pdfsubject = {subject},
+  pdfkeywords = {one, two},
+  pdfproducer = {LaTeX},
+   pdfcreator = {pdfLaTeX},
+   }
+
+\usepackage{enumitem}
+\usepackage{pifont}
+
+% enumi 값을 기반으로 ①, ②, ③...을 출력
+\newcommand{\circlednum}[1]{\ding{\numexpr171+#1}} % ①=172
+
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand\dis{\displaystyle}
+\newcommand\var{\operatorname{Var}}
+
+\pagestyle{fancy}
+\lhead{\lecname}
+\chead{\textbf{\doctitle}}
+\rhead{\name}
+
+\newcommand{\doctitle}{예시 도큐먼트 타입의 \LaTeX 문서}
+\newcommand{\lecname}{2025 Fall CP seminar}
+\newcommand{\name}{Sungwoo Park}
+\newcommand{\todaydate}{Aug. 19, 2025}
+
+\begin{document}
+
+\title{\lecname \doctitle}
+\author{\name}
+\date{\todaydate}
+
+\begin{flushright}
+\lecname \\
+\todaydate \\
+\name \\
+\end{flushright}
+
+\begin{center}
+\Large
+\bfseries
+\doctitle
+\end{center}
+
+% suppress the fancy header on the first page only
+\thispagestyle{plain}
+
+샘플로 작성하는 문서입니다.
+
+\section{Introduction}
+이 문서는 \LaTeX{} 문서 작성의 예시로 작성되었습니다. 이 문서에서는 다양한 수학 기호와 환경을 사용하여 내용을 표현합니다.
+
+\subsection{문서 구조}
+\[\sum e_i^2 \overset{(1)}{=}\sum(y_i - \hat{y_i})^2 \overset{(2)}{=} S_{xx}+\hat{\beta}^2S_{xx}-2\hat{\beta}S_{xy}\overset{(3)}{=}S_{yy}-\frac{S_{xy}^2}{S_{xx}}\]
+
+\subsubsection{수학 기호}
+다양한 수학 기호와 환경을 사용하여 내용을 표현합니다.
+
+\subsection*{기타 사항}
+별을 붙이면 번호가 매겨지지 않습니다.
+
+\section{Loren Ipsum}
+\subsubsection{예시 제목}
+단순선형회귀모형 \(y_i = \alpha + \beta x_i + e_i\)에서 최소제곱법으로 구한 회귀식은 \(\hat{y}_i = \hat{\alpha} + \hat{\beta} x_i\) 이다. 여기서 \(\hat{\alpha} = \bar{y} - \hat{\beta}\bar{x}\) 이다. 오차제곱합 \(Q(\alpha, \beta) = \sum(y_i - \alpha - \beta x_i)^2\)을 최소화하는 \(\hat{\alpha}, \hat{\beta}\)는 다음 두 식을 만족한다.
+\begin{align*}
+    \frac{\partial Q}{\partial \alpha} \bigg|_{\hat{\alpha}, \hat{\beta}} = -2 \sum(y_i - \hat{\alpha} - \hat{\beta} x_i) = -2 \sum \hat{e}_i = 0 \\
+    \frac{\partial Q}{\partial \beta} \bigg|_{\hat{\alpha}, \hat{\beta}} = -2 \sum x_i(y_i - \hat{\alpha} - \hat{\beta} x_i) = -2 \sum x_i \hat{e}_i = 0
+\end{align*}
+
+\subsubsection*{연습문제 8.4 단순선형회귀모형 에서의 성질}
+\begin{enumerate}[label=(\alph*)]
+    \item 8.3과 8.4의 \(c_i\) 정의가 다름에 유의하자.
+    \[ \sum c_i y_i = \sum \frac{x_i - \bar{x}}{S_{xx}} y_i = \frac{1}{S_{xx}} \sum (x_i-\bar{x})y_i \]
+    위 문제 8.3에서 보았듯이 \(\sum(x_i-\bar{x})y_i = S_{xy}\) 이므로,
+    \[ \sum c_i y_i = \frac{S_{xy}}{S_{xx}} = \hat{\beta} \]
+\end{enumerate}
+
+\begin{enumerate}[label=(\alph*), start=3]
+    \item
+    \(\hat{\beta}\)는 \(Y_i\)들의 선형결합 \(\sum c_i Y_i\) 이므로 기댓값은,
+    \[ E(\hat{\beta}) = E\left(\sum c_i Y_i\right) = \sum c_i E(Y_i) \]
+    모형에서 \(E(Y_i) = \alpha + \beta x_i\) 이므로,
+    \[ E(\hat{\beta}) = \sum c_i (\alpha + \beta x_i) = \alpha \sum c_i + \beta \sum c_i x_i \]
+    여기서 \(\sum c_i\) 와 \(\sum c_i x_i\)를 계산하면,
+    \[ \sum c_i = \sum \frac{x_i - \bar{x}}{S_{xx}} = \frac{1}{S_{xx}} \sum(x_i - \bar{x}) = 0 \]
+    \[ \sum c_i x_i = \sum \frac{x_i - \bar{x}}{S_{xx}} x_i = \frac{1}{S_{xx}} \sum (x_i - \bar{x})x_i = \frac{1}{S_{xx}} \sum (x_i - \bar{x})(x_i - \bar{x}) = \frac{S_{xx}}{S_{xx}} = 1 \]
+    따라서, \(E(\hat{\beta}) = \alpha(0) + \beta(1) = \beta\). 즉 \(\hat{\beta}\)는 \(\beta\)의 불편추정량이다.
+
+    \item
+    \(Y_i\)들이 서로 독립이고 \(Var(Y_i) = \sigma^2\) 이므로,
+    \[ Var(\hat{\beta}) = Var\left(\sum c_i Y_i\right) = \sum c_i^2 Var(Y_i) = \sigma^2 \sum c_i^2 \]
+    \(\sum c_i^2\)를 계산하면,
+    \[ \sum c_i^2 = \sum \left(\frac{x_i - \bar{x}}{S_{xx}}\right)^2 = \frac{1}{S_{xx}^2} \sum(x_i - \bar{x})^2 = \frac{S_{xx}}{S_{xx}^2} = \frac{1}{S_{xx}} \]
+    따라서, \(\dis Var(\hat{\beta}) = \sigma^2 \left(\frac{1}{S_{xx}}\right) = \frac{\sigma^2}{S_{xx}}\) \hfill $\blacksquare$
+\end{enumerate}
+
+
+\end{document}
