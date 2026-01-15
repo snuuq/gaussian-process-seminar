@@ -6,15 +6,15 @@
 
 방학중엔 매주 목요일 저녁 5시에 진행됩니다.
 
-| 주차  | 일자       | 내용                                                     | 담당자 |
-| --- | -------- | ------------------------------------------------------ | --- |
-| 1주  | 01. 22.  | Ch2. Gaussian Process (~ 2.4)                  | 고명금 |
-| 2주  | 01. 29.   | Ch2. Gaussian Process (2.5 ~)        | 최윤서 |
-| 3주  | 02. 05.   | Ch3. Modeling with Gaussian Process                | 박성우 |
-| 4주  | 02. 12.   | Ch4. Model assessment, Selection, and Averaging | 고경태 |
-| 5주  | 02. 19.   | Ch5. Decision Theory for optimization    | 김지광 |
-| 6주  | 02. 26.   | Ch6. Utility functions for optimization + Ch7. Common Bayesian Optimiation Policies (~ 7.5) | 윤다연 |
-| 7주  | 03. 05.   | Ch7. Common Bayesian Optimiation Policies (7.6 ~ )   | 이혜림 |
+| 일자       | 내용                                                     | 담당자 |
+| -------- | ------------------------------------------------------ | --- |
+| 01. 22.  | Ch2. Gaussian Process (~ 2.4)                  | 박성우 |
+| 01. 29.   | Ch2. Gaussian Process (2.5 ~)        | 최윤서 |
+| 02. 05.   | Ch3. Modeling with Gaussian Process                | 고명금 |
+| 02. 12.   | Ch4. Model assessment, Selection, and Averaging | 고경태 |
+| 02. 19.   | Ch5. Decision Theory for optimization    | 김지광 |
+| 02. 26.   | Ch6. Utility functions for optimization + Ch7. Common Bayesian Optimiation Policies (~ 7.5) | 윤다연 |
+| 03. 05.   | Ch7. Common Bayesian Optimiation Policies (7.6 ~ )   | 이혜림 |
 
 > 추후 진도 사항에 따라 일정이 변경될 수 있습니다.
 
