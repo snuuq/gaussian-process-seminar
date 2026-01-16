@@ -1,6 +1,5 @@
 # gaussian-process-seminar
-2026 Winter seminar on "Bayesian Optimization Book" by Roman Garnett
-
+2026 Winter seminar on ["Bayesian Optimization Book" by Roman Garnett](https://bayesoptbook.com/)
 
 ## 일정표
 
@@ -8,20 +7,20 @@
 
 | 일자       | 내용                                                     | 담당자 |
 | -------- | ------------------------------------------------------ | --- |
-| 01. 22.  | Ch2. Gaussian Process (~ 2.4)                  | 박성우 |
-| 01. 29.   | Ch2. Gaussian Process (2.5 ~)        | 최윤서 |
-| 02. 05.   | Ch3. Modeling with Gaussian Process                | 고명금 |
-| 02. 12.   | Ch4. Model assessment, Selection, and Averaging | 고경태 |
-| 02. 19.   | Ch5. Decision Theory for optimization    | 김지광 |
-| 02. 26.   | Ch6. Utility functions for optimization + Ch7. Common Bayesian Optimiation Policies (~ 7.5) | 윤다연 |
-| 03. 05.   | Ch7. Common Bayesian Optimiation Policies (7.6 ~ )   | 이혜림 |
+| 1/22 | Ch2. Gaussian Process (~ 2.4)                  | 박성우 |
+| 1/29 | Ch2. Gaussian Process (2.5 ~)        | 최윤서 |
+| 2/5 | Ch3. Modeling with Gaussian Process                | 고명금 |
+| 2/12 | Ch4. Model assessment, Selection, and Averaging | 고경태 |
+| 2/19 | Ch5. Decision Theory for optimization    | 김지광 |
+| 2/26 | Ch6. Utility functions for optimization + Ch7. Common Bayesian Optimiation Policies (~ 7.5) | 윤다연 |
+| 3/5 | Ch7. Common Bayesian Optimiation Policies (7.6 ~ )   | 이혜림 |
 
 > 추후 진도 사항에 따라 일정이 변경될 수 있습니다.
 
 ## 세미나 규칙
 
 - (필수) **매주 내용 읽기**
-- (필수) **세미나 주차 목요일까지** 주차 [Discussion](https://github.com/snuuq/gaussian-process-seminar/discussions)에 질문 한개 이상 작성
+- (필수) **세미나 주차 화요일까지** 주차 [Discussion](https://github.com/snuuq/gaussian-process-seminar/discussions)에 질문 한개 이상 작성
 - 주기적으로 Discussion 에서 토의하기
 - 해당 주차 담당자의 경우 **요약 발표 자료 작성**
 
