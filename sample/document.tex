@@ -42,7 +42,7 @@
 \rhead{\name}
 
 \newcommand{\doctitle}{예시 도큐먼트 타입의 \LaTeX 문서}
-\newcommand{\lecname}{2025 Fall CP seminar}
+\newcommand{\lecname}{SNUUQ seminar}
 \newcommand{\name}{Sungwoo Park}
 \newcommand{\todaydate}{Aug. 19, 2025}
 
@@ -53,15 +53,15 @@
 \date{\todaydate}
 
 \begin{flushright}
-\lecname \\
-\todaydate \\
-\name \\
+    \lecname \\
+    \todaydate \\
+    \name \\
 \end{flushright}
 
 \begin{center}
-\Large
-\bfseries
-\doctitle
+    \Large
+    \bfseries
+    \doctitle
 \end{center}
 
 % suppress the fancy header on the first page only
@@ -92,28 +92,28 @@
 \subsubsection*{연습문제 8.4 단순선형회귀모형 에서의 성질}
 \begin{enumerate}[label=(\alph*)]
     \item 8.3과 8.4의 \(c_i\) 정의가 다름에 유의하자.
-    \[ \sum c_i y_i = \sum \frac{x_i - \bar{x}}{S_{xx}} y_i = \frac{1}{S_{xx}} \sum (x_i-\bar{x})y_i \]
-    위 문제 8.3에서 보았듯이 \(\sum(x_i-\bar{x})y_i = S_{xy}\) 이므로,
-    \[ \sum c_i y_i = \frac{S_{xy}}{S_{xx}} = \hat{\beta} \]
+          \[ \sum c_i y_i = \sum \frac{x_i - \bar{x}}{S_{xx}} y_i = \frac{1}{S_{xx}} \sum (x_i-\bar{x})y_i \]
+          위 문제 8.3에서 보았듯이 \(\sum(x_i-\bar{x})y_i = S_{xy}\) 이므로,
+          \[ \sum c_i y_i = \frac{S_{xy}}{S_{xx}} = \hat{\beta} \]
 \end{enumerate}
 
 \begin{enumerate}[label=(\alph*), start=3]
     \item
-    \(\hat{\beta}\)는 \(Y_i\)들의 선형결합 \(\sum c_i Y_i\) 이므로 기댓값은,
-    \[ E(\hat{\beta}) = E\left(\sum c_i Y_i\right) = \sum c_i E(Y_i) \]
-    모형에서 \(E(Y_i) = \alpha + \beta x_i\) 이므로,
-    \[ E(\hat{\beta}) = \sum c_i (\alpha + \beta x_i) = \alpha \sum c_i + \beta \sum c_i x_i \]
-    여기서 \(\sum c_i\) 와 \(\sum c_i x_i\)를 계산하면,
-    \[ \sum c_i = \sum \frac{x_i - \bar{x}}{S_{xx}} = \frac{1}{S_{xx}} \sum(x_i - \bar{x}) = 0 \]
-    \[ \sum c_i x_i = \sum \frac{x_i - \bar{x}}{S_{xx}} x_i = \frac{1}{S_{xx}} \sum (x_i - \bar{x})x_i = \frac{1}{S_{xx}} \sum (x_i - \bar{x})(x_i - \bar{x}) = \frac{S_{xx}}{S_{xx}} = 1 \]
-    따라서, \(E(\hat{\beta}) = \alpha(0) + \beta(1) = \beta\). 즉 \(\hat{\beta}\)는 \(\beta\)의 불편추정량이다.
+          \(\hat{\beta}\)는 \(Y_i\)들의 선형결합 \(\sum c_i Y_i\) 이므로 기댓값은,
+          \[ E(\hat{\beta}) = E\left(\sum c_i Y_i\right) = \sum c_i E(Y_i) \]
+          모형에서 \(E(Y_i) = \alpha + \beta x_i\) 이므로,
+          \[ E(\hat{\beta}) = \sum c_i (\alpha + \beta x_i) = \alpha \sum c_i + \beta \sum c_i x_i \]
+          여기서 \(\sum c_i\) 와 \(\sum c_i x_i\)를 계산하면,
+          \[ \sum c_i = \sum \frac{x_i - \bar{x}}{S_{xx}} = \frac{1}{S_{xx}} \sum(x_i - \bar{x}) = 0 \]
+          \[ \sum c_i x_i = \sum \frac{x_i - \bar{x}}{S_{xx}} x_i = \frac{1}{S_{xx}} \sum (x_i - \bar{x})x_i = \frac{1}{S_{xx}} \sum (x_i - \bar{x})(x_i - \bar{x}) = \frac{S_{xx}}{S_{xx}} = 1 \]
+          따라서, \(E(\hat{\beta}) = \alpha(0) + \beta(1) = \beta\). 즉 \(\hat{\beta}\)는 \(\beta\)의 불편추정량이다.
 
     \item
-    \(Y_i\)들이 서로 독립이고 \(Var(Y_i) = \sigma^2\) 이므로,
-    \[ Var(\hat{\beta}) = Var\left(\sum c_i Y_i\right) = \sum c_i^2 Var(Y_i) = \sigma^2 \sum c_i^2 \]
-    \(\sum c_i^2\)를 계산하면,
-    \[ \sum c_i^2 = \sum \left(\frac{x_i - \bar{x}}{S_{xx}}\right)^2 = \frac{1}{S_{xx}^2} \sum(x_i - \bar{x})^2 = \frac{S_{xx}}{S_{xx}^2} = \frac{1}{S_{xx}} \]
-    따라서, \(\dis Var(\hat{\beta}) = \sigma^2 \left(\frac{1}{S_{xx}}\right) = \frac{\sigma^2}{S_{xx}}\) \hfill $\blacksquare$
+          \(Y_i\)들이 서로 독립이고 \(Var(Y_i) = \sigma^2\) 이므로,
+          \[ Var(\hat{\beta}) = Var\left(\sum c_i Y_i\right) = \sum c_i^2 Var(Y_i) = \sigma^2 \sum c_i^2 \]
+          \(\sum c_i^2\)를 계산하면,
+          \[ \sum c_i^2 = \sum \left(\frac{x_i - \bar{x}}{S_{xx}}\right)^2 = \frac{1}{S_{xx}^2} \sum(x_i - \bar{x})^2 = \frac{S_{xx}}{S_{xx}^2} = \frac{1}{S_{xx}} \]
+          따라서, \(\dis Var(\hat{\beta}) = \sigma^2 \left(\frac{1}{S_{xx}}\right) = \frac{\sigma^2}{S_{xx}}\) \hfill $\blacksquare$
 \end{enumerate}
 
 
