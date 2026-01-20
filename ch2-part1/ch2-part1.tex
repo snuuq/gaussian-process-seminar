@@ -1,0 +1,537 @@
+%----------------------------------------------------------------------------------------
+%    PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
+\usetheme{SimpleDarkBlue}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{kotex} % For Korean language
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\definecolor{links}{rgb}{0.36,0.54,0.66}
+\hypersetup{
+   colorlinks = true,
+    linkcolor = black,
+     urlcolor = blue,
+    citecolor = blue,
+    filecolor = blue,
+   pdfproducer = {LaTeX},
+   pdfcreator = {pdfLaTeX},
+   }
+\setbeamertemplate{caption}[numbered]
+
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{Ch2. Gaussian Processes (Part 1)}
+\subtitle{Bayesian Optimization Seminar}
+
+\author{Sungwoo Park}
+
+\institute
+{
+    Uncertainty Quantification Lab \\
+    Seoul National University
+}
+\date{\today}
+
+% add section contents pages
+\AtBeginSection[]
+{
+    \begin{frame}
+    \frametitle{Contents}
+    \tableofcontents[currentsection]
+    \end{frame}
+}
+
+%----------------------------------------------------------------------------------------
+%    PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\begin{frame}
+    % Print the title page as the first slide
+    \titlepage
+\end{frame}
+
+\begin{frame}{Overview}
+    \tableofcontents
+\end{frame}
+
+%------------------------------------------------
+\section{Definition and Basic Properties}
+%------------------------------------------------
+
+\begin{frame}{What is a Gaussian Process?}
+    A \alert{Gaussian process (GP)} extends the multivariate normal distribution to model functions on infinite domains.
+
+    \begin{block}{Key Idea}
+        We model an objective function $f: \mathcal{X} \to \mathbb{R}$ as an infinite collection of random variables, one for each point in the domain. The \textbf{Kolmogorov extension theorem} allows us to specify this distribution through finite-dimensional marginals.
+    \end{block}
+
+    \vspace{0.3cm}
+    GPs inherit convenient mathematical properties of the multivariate normal distribution while remaining computationally tractable.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Recall: Kolmogorov Extension Theorem}
+    TODO
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{GP Specification: Mean and Covariance Functions}
+    A GP on $f$ is specified by:
+    \[
+        p(f) = \mathcal{GP}(f; \mu, K)
+    \]
+
+    \begin{itemize}
+        \item \textbf{Mean function} $\mu: \mathcal{X} \to \mathbb{R}$: determines the expected function value
+              \[
+                  \mu(x) = \mathbb{E}[\phi \mid x], \quad \text{where } \phi = f(x)
+              \]
+
+        \item \textbf{Covariance function (kernel)} $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$: encodes the correlation structure
+              \[
+                  K(x, x') = \text{cov}[\phi, \phi' \mid x, x'], \quad \text{where } \phi' = f(x')
+              \]
+    \end{itemize}
+
+    The covariance function must be \alert{symmetric} and \alert{positive semidefinite}.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Finite-Dimensional Marginals}
+    For any finite set of points $\mathbf{x} \subset \mathcal{X}$, the corresponding function values $\bm{\phi} = f(\mathbf{x})$ follow a multivariate normal distribution:
+    \[
+        p(\bm{\phi} \mid \mathbf{x}) = \mathcal{N}(\bm{\phi}; \bm{\mu}, \bm{\Sigma})
+    \]
+    where
+    \[
+        \bm{\mu} = \mathbb{E}[\bm{\phi} \mid \mathbf{x}] = \mu(\mathbf{x}); \quad \bm{\Sigma} = \text{cov}[\bm{\phi} \mid \mathbf{x}] = K(\mathbf{x}, \mathbf{x})
+    \]
+
+    \begin{block}{Gram Matrix}
+        $K(\mathbf{x}, \mathbf{x})$ is the matrix formed by evaluating $K$ for each pair of points:
+        \[
+            \Sigma_{ij} = K(x_i, x_j)
+        \]
+    \end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Example: Squared Exponential Covariance}
+    \begin{center}
+        \begin{figure}
+            \includegraphics[width = 14cm]{figure/fig-1-GP.png}
+            \caption{Example of Gaussian Process \cite{Garnett2023-gc}}
+        \end{figure}
+    \end{center}
+
+    Consider $\mathcal{X} = [0, 30]$ with:
+    \begin{itemize}
+        \item Mean function: $\mu \equiv 0$ (constant central tendency)
+        \item Covariance function (squared exponential):
+              \[
+                  K(x, x') = \exp\left(-\frac{1}{2}|x - x'|^2\right)
+              \]
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Example: Squared Exponential Covariance}
+    \addtocounter{figure}{-1}
+    \begin{center}
+        \begin{figure}
+            \includegraphics[width = 14cm]{figure/fig-1-GP.png}
+            \caption{Example of Gaussian Process \cite{Garnett2023-gc}}
+        \end{figure}
+    \end{center}
+
+    \textbf{Properties:}
+    \begin{itemize}
+        \item $\text{var}[\phi \mid x] = K(x,x) = 1$ at every point
+        \item Correlation decreases with distance: nearby values are highly correlated, distant values are nearly independent
+        \item This encodes a statistical notion of \alert{continuity}
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Sampling from a Gaussian Process (Appendix A.2)}
+    To sample from a GP with mean $\mu$ and covariance $K$:
+
+    \begin{enumerate}
+        \item Choose a finite grid of points $\mathbf{x} = (x_1, \ldots, x_n)$
+        \item Compute $\bm{\mu} = \mu(\mathbf{x})$ and $\bm{\Sigma} = K(\mathbf{x}, \mathbf{x})$
+        \item Factor: $\bm{\Sigma} = \mathbf{L}\mathbf{L}^\top$ (Cholesky decomposition)
+        \item Sample $\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$
+        \item Compute $\bm{\phi} = \bm{\mu} + \mathbf{L}\mathbf{z}$
+    \end{enumerate}
+
+    \vspace{0.3cm}
+    The resulting sample $\bm{\phi}$ represents function values at the chosen grid points, respecting the correlation structure encoded by $K$.
+\end{frame}
+
+%------------------------------------------------
+\section{Inference with Exact and Noisy Observations}
+%------------------------------------------------
+
+\begin{frame}{General Framework: Jointly Gaussian Observations}
+    We can condition a GP $p(f) = \mathcal{GP}(f; \mu, K)$ on any vector $\mathbf{y}$ sharing a joint Gaussian distribution with $f$:
+    \[
+        p(f, \mathbf{y}) = \mathcal{GP}\left(\begin{bmatrix} f \\ \mathbf{y} \end{bmatrix}; \begin{bmatrix} \mu \\ \mathbf{m} \end{bmatrix}, \begin{bmatrix} K & \bm{\kappa}^\top \\ \bm{\kappa} & \mathbf{C} \end{bmatrix}\right)
+    \]
+
+    where:
+    \begin{itemize}
+        \item $p(\mathbf{y}) = \mathcal{N}(\mathbf{y}; \mathbf{m}, \mathbf{C})$ : marginal distribution of observations
+        \item $\bm{\kappa}(x) = \text{cov}[\mathbf{y}, \phi \mid x]$ : cross-covariance function
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Posterior Gaussian Process}
+    Conditioning on observations $\mathcal{D} = \mathbf{y}$ yields a GP posterior:
+    \[
+        p(f \mid \mathcal{D}) = \mathcal{GP}(f; \mu_{\mathcal{D}}, K_{\mathcal{D}})
+    \]
+
+    \begin{alertblock}{Posterior Mean and Covariance}
+        \vspace{-0.3cm}
+        \begin{align*}
+            \mu_{\mathcal{D}}(x)   & = \mu(x) + \bm{\kappa}(x)^\top \mathbf{C}^{-1}(\mathbf{y} - \mathbf{m}) \\
+            K_{\mathcal{D}}(x, x') & = K(x, x') - \bm{\kappa}(x)^\top \mathbf{C}^{-1} \bm{\kappa}(x')
+        \end{align*}
+    \end{alertblock}
+
+    \vspace{0.2cm}
+    \textbf{Inference procedure:}
+    \begin{enumerate}
+        \item Compute marginal distribution of $\mathbf{y}$
+        \item Derive cross-covariance function $\bm{\kappa}$
+        \item Apply the posterior formulas
+    \end{enumerate}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Handling Additive Gaussian Noise}
+    Suppose we observe $\mathbf{z} = \mathbf{y} + \bm{\varepsilon}$ where $\bm{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{N})$ is independent noise.
+
+    \vspace{0.3cm}
+    Then:
+    \[
+        p(\mathbf{z} \mid \mathbf{N}) = \mathcal{N}(\mathbf{z}; \mathbf{m}, \mathbf{C} + \mathbf{N}); \quad \text{cov}[\mathbf{z}, \phi \mid x] = \bm{\kappa}(x)
+    \]
+
+    \begin{block}{Key Result}
+        Simply replace $\mathbf{C}$ with $\mathbf{C} + \mathbf{N}$ in the posterior formulas!
+    \end{block}
+
+    \vspace{0.2cm}
+    As $\mathbf{N} \to \mathbf{0}$, the posterior converges to that from direct observation of $\mathbf{y}$.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Inference with Exact Function Evaluations}
+    Suppose we observe $f$ at locations $\mathbf{x}$, revealing $\bm{\phi} = f(\mathbf{x})$.
+
+    \vspace{0.3cm}
+    The posterior is $p(f \mid \mathcal{D}) = \mathcal{GP}(f; \mu_{\mathcal{D}}, K_{\mathcal{D}})$ with:
+
+    \begin{align*}
+        \mu_{\mathcal{D}}(x)   & = \mu(x) + K(x, \mathbf{x}) \bm{\Sigma}^{-1}(\bm{\phi} - \bm{\mu}) \\
+        K_{\mathcal{D}}(x, x') & = K(x, x') - K(x, \mathbf{x}) \bm{\Sigma}^{-1} K(\mathbf{x}, x')
+    \end{align*}
+
+    where $\bm{\Sigma} = K(\mathbf{x}, \mathbf{x})$ and $\bm{\mu} = \mu(\mathbf{x})$.
+
+    \vspace{0.3cm}
+    \textbf{Key properties:}
+    \begin{itemize}
+        \item Posterior mean \alert{interpolates} through observed points
+        \item Posterior variance \alert{vanishes} at observed locations
+        \item Uncertainty remains unchanged far from observations
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Inference with Noisy Function Evaluations}
+    Suppose observations are corrupted: $\mathbf{y} = \bm{\phi} + \bm{\varepsilon}$ with $\bm{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{N})$.
+
+    \vspace{0.2cm}
+    \textbf{Common noise models:}
+    \begin{itemize}
+        \item \textbf{Homoskedastic}: $\mathbf{N} = \sigma_n^2 \mathbf{I}$ (constant noise)
+        \item \textbf{Heteroskedastic}: $\mathbf{N} = \text{diag}(\sigma_n^2(\mathbf{x}))$ (location-dependent)
+    \end{itemize}
+
+    \vspace{0.3cm}
+    The posterior formulas become:
+    \begin{align*}
+        \mu_{\mathcal{D}}(x)   & = \mu(x) + K(x, \mathbf{x})(\bm{\Sigma} + \mathbf{N})^{-1}(\mathbf{y} - \bm{\mu}) \\
+        K_{\mathcal{D}}(x, x') & = K(x, x') - K(x, \mathbf{x})(\bm{\Sigma} + \mathbf{N})^{-1}K(\mathbf{x}, x')
+    \end{align*}
+
+    \vspace{0.2cm}
+    The posterior mean no longer interpolates exactly; extreme values may be ``explained away'' as noise.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Interpretation of Posterior Moments}
+    Consider a single observation $y$ with distribution $\mathcal{N}(y; m, s^2)$ and define:
+    \begin{itemize}
+        \item $z$-score: $z = \frac{y - m}{s}$
+        \item Correlation: $\rho = \text{corr}[y, \phi \mid x] = \frac{\kappa(x)}{\sigma s}$
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \begin{alertblock}{Posterior Moments (Scalar Case)}
+        \vspace{-0.5cm}
+        \begin{align*}
+            \text{Posterior mean of } \phi & : \mu + \sigma \rho z      \\
+            \text{Posterior std of } \phi  & : \sigma \sqrt{1 - \rho^2}
+        \end{align*}
+    \end{alertblock}
+
+    \vspace{0.2cm}
+    \textbf{Intuition:}
+    \begin{itemize}
+        \item Mean shifts proportionally to $z$-score and correlation strength
+        \item Variance reduction depends only on correlation $|\rho|$
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Posterior Predictive Distribution}
+    For the latent function value $\phi = f(x)$:
+    \[
+        p(\phi \mid x, \mathcal{D}) = \mathcal{N}(\phi; \mu_{\mathcal{D}}(x), K_{\mathcal{D}}(x, x))
+    \]
+
+    \vspace{0.3cm}
+    For a \alert{noisy observation} $y$ at location $x$ (with noise variance $\sigma_n^2$):
+    \[
+        p(y \mid x, \mathcal{D}, \sigma_n) = \mathcal{N}(y; \mu_{\mathcal{D}}(x), K_{\mathcal{D}}(x, x) + \sigma_n^2)
+    \]
+
+    \vspace{0.3cm}
+    The predictive credible intervals for noisy measurements are inflated compared to the latent function, reflecting observation uncertainty.
+\end{frame}
+
+%------------------------------------------------
+\section{Joint Gaussian Processes}
+%------------------------------------------------
+
+\begin{frame}{Topics Covered in Remaining Sections}
+    The remainder of Chapter 2 covers more specialized topics:
+
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item \textbf{\S 2.4 Joint Gaussian Processes}: Modeling multiple correlated functions
+        \item \textbf{\S 2.5 Continuity}: Conditions for continuous sample paths
+        \item \textbf{\S 2.6 Differentiability}: Conditions for differentiable sample paths; derivative observations
+        \item \textbf{\S 2.7 Existence/Uniqueness of Global Maxima}: Theoretical guarantees
+        \item \textbf{\S 2.8 Non-Gaussian Observations}: Approximate inference methods
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \alert{Key takeaway}: Sections 2.1--2.2 provide sufficient foundation for most practical Bayesian optimization applications!
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Motivation: Modeling Multiple Functions}
+    In some settings, we need to jointly reason about \alert{multiple related functions}:
+    \begin{itemize}
+        \item An objective function and its gradient
+        \item An expensive objective and cheaper surrogates (multifidelity)
+        \item Multiple objectives (multiobjective optimization)
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \begin{block}{Key Idea}
+        ``Paste together'' multiple functions into a single function on a larger domain, then construct a standard GP on this combined function.
+    \end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Definition of Joint Gaussian Process}
+    Consider functions $\{f_i: \mathcal{X}_i \to \mathbb{R}\}$. Define the \textbf{disjoint union}:
+    \[
+        \bigsqcup f: \mathcal{X} \to \mathbb{R}, \quad \mathcal{X} = \bigsqcup \mathcal{X}_i
+    \]
+    such that $\bigsqcup f|_{\mathcal{X}_i} \equiv f_i$.
+
+    \vspace{0.3cm}
+    A \alert{joint Gaussian process} is a GP on $\bigsqcup f$:
+    \[
+        p(\bigsqcup f) = \mathcal{GP}(\bigsqcup f; \mu, K)
+    \]
+
+    \vspace{0.3cm}
+    The mean and covariance functions on $\mathcal{X}$ encode both:
+    \begin{itemize}
+        \item Marginal behavior of each function
+        \item Cross-correlations between functions
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Decomposed Notation}
+    For two functions $f: \mathcal{F} \to \mathbb{R}$ and $g: \mathcal{G} \to \mathbb{R}$:
+
+    \[
+        p(f, g) = \mathcal{GP}\left(\begin{bmatrix} f \\ g \end{bmatrix}; \begin{bmatrix} \mu_f \\ \mu_g \end{bmatrix}, \begin{bmatrix} K_f & K_{fg} \\ K_{gf} & K_g \end{bmatrix}\right)
+    \]
+
+    \vspace{0.3cm}
+    \textbf{Components:}
+    \begin{itemize}
+        \item $\mu_f, K_f$ and $\mu_g, K_g$: marginal GP parameters
+        \item $K_{fg}(x, x') = \text{cov}[\phi, \gamma \mid x, x']$: cross-covariance
+        \item $K_{gf} = K_{fg}^\top$
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Marginal property}: Each function has a marginal GP distribution:
+    \[
+        p(f) = \mathcal{GP}(f; \mu_f, K_f); \quad p(g) = \mathcal{GP}(g; \mu_g, K_g)
+    \]
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Example: Correlated Functions}
+    \begin{center}
+        \begin{figure}
+            \includegraphics[width = 14cm]{figure/fig-2-joint-GP.png}
+            \caption{Example of Joint Gaussian Process \cite{Garnett2023-gc}}
+        \end{figure}
+    \end{center}
+
+    Consider $f, g: [0, 30] \to \mathbb{R}$ with:
+    \begin{itemize}
+        \item Same marginal: $\mu \equiv 0$, squared exponential covariance $K$
+        \item Cross-covariance: $K_{fg}(x, x') = 0.9 \cdot K(x, x')$
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Example: Correlated Functions}
+    \addtocounter{figure}{-1}
+    \begin{center}
+        \begin{figure}
+            \includegraphics[width = 14cm]{figure/fig-2-joint-GP.png}
+            \caption{Example of Joint Gaussian Process \cite{Garnett2023-gc}}
+        \end{figure}
+    \end{center}
+
+    For any point $x$, the correlation between $\phi = f(x)$ and $\gamma = g(x)$ is:
+    \[
+        \text{corr}[\phi, \gamma \mid x] = 0.9
+    \]
+
+    \vspace{0.3cm}
+    \textbf{Consequence}: Samples from the joint distribution show strong coupling, the functions ``move together.''
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Inference for Joint GPs}
+    The joint GP construction allows us to condition on observations of \alert{any} of the functions using the standard inference procedure.
+
+    \vspace{0.3cm}
+    \begin{examples}
+        Given observations of $f$ on the left side of the domain and observations of $g$ on the right side:
+        \begin{itemize}
+            \item Observations of $f$ inform our belief about $g$ (and vice versa)
+            \item Information propagates through the cross-covariance structure
+            \item Strong correlation $\Rightarrow$ strong information transfer
+        \end{itemize}
+    \end{examples}
+
+    \vspace{0.3cm}
+    This is particularly useful for \alert{multifidelity optimization}: cheap surrogate evaluations inform our belief about the expensive objective.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Extension to Vector-Valued Functions}
+    A GP on a vector-valued function $\mathbf{f}: \mathcal{X} \to \mathbb{R}^d$ is defined by a joint GP on its coordinate functions $\{f_i\}: \mathcal{X} \to \mathbb{R}$.
+
+    \vspace{0.3cm}
+    Notation: $\mathcal{GP}(\mathbf{f}; \mu, K)$ where:
+    \begin{itemize}
+        \item $\mu: \mathcal{X} \to \mathbb{R}^d$ (vector-valued mean)
+        \item $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}^{d \times d}$ (matrix-valued covariance)
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Applications:}
+    \begin{itemize}
+        \item Joint distribution of $f$ and $\nabla f$ (gradient)
+        \item Multiobjective optimization with correlated objectives
+        \item Modeling spatial vector fields
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\section{Summary}
+%------------------------------------------------
+
+\begin{frame}{Summary of Key Ideas}
+    \begin{enumerate}
+        \item \textbf{GP Definition}: Specified by mean $\mu$ and covariance $K$ functions; finite marginals are multivariate Gaussian
+
+              \vspace{0.2cm}
+        \item \textbf{Exact Inference}: Conditioning on jointly Gaussian observations yields a GP posterior with closed-form mean and covariance
+
+              \vspace{0.2cm}
+        \item \textbf{Noisy Inference}: Replace $\mathbf{C}$ with $\mathbf{C} + \mathbf{N}$ to handle additive Gaussian noise
+
+              \vspace{0.2cm}
+        \item \textbf{Posterior Interpretation}: Mean update $\propto$ (correlation $\times$ $z$-score); variance reduction depends on correlation strength
+
+              \vspace{0.2cm}
+        \item \textbf{Joint GPs}: Model multiple correlated functions; enable information sharing across related tasks
+    \end{enumerate}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{References}
+    \footnotesize
+    \bibliography{ref.bib}
+    \bibliographystyle{apalike}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+    \Huge{\centerline{\textbf{Thank You}}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
