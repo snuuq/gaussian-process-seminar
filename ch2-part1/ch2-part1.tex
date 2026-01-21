@@ -17,7 +17,7 @@
    colorlinks = true,
     linkcolor = black,
      urlcolor = blue,
-    citecolor = blue,
+    % citecolor = blue,
     filecolor = blue,
    pdfproducer = {LaTeX},
    pdfcreator = {pdfLaTeX},
@@ -64,6 +64,117 @@
     \tableofcontents
 \end{frame}
 
+
+%------------------------------------------------
+\section{Review of Chapter 1: Introduction}
+%------------------------------------------------
+
+\begin{frame}{The Optimization Problem}
+    \begin{block}{Goal}
+        Find the global optimum of an objective function $f: \mathcal{X} \to \mathbb{R}$:
+        \[
+            x^* = \arg\max_{x \in \mathcal{X}} f(x); \quad f^* = \max_{x \in \mathcal{X}} f(x)
+        \]
+    \end{block}
+
+    \vspace{0.3cm}
+    \textbf{Setting}:
+    \begin{itemize}
+        \item Objective function $f$ is \alert{expensive} to evaluate (time, cost, resources)
+        \item We can only access $f$ through \alert{sequential observations}
+        \item Observations may be \alert{noisy}: $y = f(x) + \varepsilon$
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Challenge}: How do we decide where to observe next, given limited budget?
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Observation Model}
+    Observations are realized by a stochastic mechanism:
+    \[
+        p(y \mid x, \phi), \quad \text{where } \phi = f(x)
+    \]
+
+    \vspace{0.3cm}
+    \textbf{Common model --- Additive Gaussian noise}:
+    \[
+        y = \phi + \varepsilon, \quad \varepsilon \sim \mathcal{N}(0, \sigma_n^2)
+    \]
+    \[
+        \Rightarrow \quad p(y \mid x, \phi, \sigma_n) = \mathcal{N}(y; \phi, \sigma_n^2)
+    \]
+
+    \vspace{0.3cm}
+    \textbf{Assumption}: Multiple observations are \alert{conditionally independent} given the objective function values:
+    \[
+        p(\mathbf{y} \mid \mathbf{x}, \bm{\phi}) = \prod_i p(y_i \mid x_i, \phi_i)
+    \]
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{The Bayesian Approach: Key Idea}
+    \begin{block}{Core Principle}
+        Treat the unknown objective function $f$ as a \alert{random variable} and use \textbf{Bayesian inference} to reason about it.
+    \end{block}
+
+    \vspace{0.3cm}
+    \textbf{Bayesian Inference Refresher}:
+    \begin{enumerate}
+        \item Start with a \textbf{prior} $p(\phi \mid x)$ encoding initial beliefs
+        \item Observe data $\mathcal{D} = (x, y)$ via the \textbf{likelihood} $p(y \mid x, \phi)$
+        \item Update to the \textbf{posterior} via Bayes' rule:
+              \[
+                  p(\phi \mid \mathcal{D}) = \frac{p(y \mid x, \phi) \, p(\phi \mid x)}{p(y \mid x)}
+              \]
+    \end{enumerate}
+
+    \vspace{0.2cm}
+    The posterior captures what we now believe about $\phi$ after seeing the data.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Inference of the Objective Function}
+    To reason about the \textit{entire} objective function $f: \mathcal{X} \to \mathbb{R}$, we need a \alert{stochastic process} --- a probability distribution over functions.
+
+    \vspace{0.3cm}
+    \begin{block}{Specifying a Stochastic Process}
+        We specify the distribution of function values $\bm{\phi} = f(\mathbf{x})$ for any finite set of locations $\mathbf{x} \subset \mathcal{X}$:
+        \[
+            p(\bm{\phi} \mid \mathbf{x})
+        \]
+    \end{block}
+
+    \vspace{0.3cm}
+    \textbf{Gaussian Processes}: The family where all such finite-dimensional distributions are \alert{multivariate Gaussian} --- mathematically convenient and widely used in Bayesian optimization.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Posterior Predictive Distribution}
+    After observing data $\mathcal{D}$, we can predict the outcome of a new observation at $x$:
+
+    \begin{block}{Posterior Predictive Distribution}
+        \[
+            p(y' \mid x, \mathcal{D}) = \int p(y' \mid x, \phi) \, p(\phi \mid x, \mathcal{D}) \, d\phi
+        \]
+    \end{block}
+
+    \vspace{0.3cm}
+    \textbf{Interpretation}:
+    \begin{itemize}
+        \item Integrates over all possible values of $\phi = f(x)$
+        \item Weights by their plausibility under the posterior
+        \item Naturally accounts for \alert{uncertainty} in the objective function
+    \end{itemize}
+
+    \vspace{0.2cm}
+    This distribution is \textit{instrumental} for making informed decisions about where to observe next.
+\end{frame}
+
 %------------------------------------------------
 \section{Definition and Basic Properties}
 %------------------------------------------------
@@ -81,8 +192,21 @@
 
 %------------------------------------------------
 
-\begin{frame}{Recall: Kolmogorov Extension Theorem}
-    TODO
+\begin{frame}{Recall: Kolmogorov's Extension Theorem}
+    \begin{block}{Theorem: Kolmogorov's Extension Theorem \cite{Durrett2019-gs}}
+        Suppose we are given probability measures \( \mu_n \) on \( (\mathbb{R}^n, \mathcal{B}(\mathbb{R}^n)) \) that are \emph{consistent}, that is,
+        \[
+            \mu_{n+1}((a_1, b_1] \times \cdots \times (a_{n+1}, b_{n+1}] \times \mathbf{R}) = \mu_n((a_1, b_1] \times \cdots \times (a_n, b_n])
+        \]
+        Then there is a unique probability measure \( P \) on \( (\mathbb{R}^\mathbf{N}, \mathcal{B}(\mathbb{R}^\mathbf{N})) \) with
+        \[
+            P(\omega : \omega_i \in (a_i, b_i], 1 \geq i \geq n) = \mu_n((a_1, b_1] \times \cdots \times (a_n, b_n])
+        \]
+        where \( \mathbf{N} = \left\{ 1, 2, \cdots \right\} \) and \( \mathcal{B}(\mathbb{R}^\mathbf{N}) = \left\{ (\omega_1, \omega_2, \cdots) : \omega_i \in \mathcal{B}(\mathbb{R}) \right\} \)
+    \end{block}
+
+    \vspace{0.2cm}
+    For GPs, consistency is automatically satisfied because the MVN satisfies them (the marginal of a MVN is MVN with the corresponding submatrix of the covariance).
 \end{frame}
 
 %------------------------------------------------
