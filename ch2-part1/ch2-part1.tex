@@ -193,7 +193,11 @@
 %------------------------------------------------
 
 \begin{frame}{Recall: Kolmogorov's Extension Theorem}
-    \begin{block}{Theorem: Kolmogorov's Extension Theorem \cite{Durrett2019-gs}}
+    \begin{exampleblock}{Question}
+        What is the \emph{consistency} property in Kolmogorov's Extension Theorem?
+    \end{exampleblock}
+
+    \begin{block}{Kolmogorov's Extension Theorem \cite{Durrett2019-gs}}
         Suppose we are given probability measures \( \mu_n \) on \( (\mathbb{R}^n, \mathcal{B}(\mathbb{R}^n)) \) that are \emph{consistent}, that is,
         \[
             \mu_{n+1}((a_1, b_1] \times \cdots \times (a_{n+1}, b_{n+1}] \times \mathbf{R}) = \mu_n((a_1, b_1] \times \cdots \times (a_n, b_n])
@@ -205,8 +209,103 @@
         where \( \mathbf{N} = \left\{ 1, 2, \cdots \right\} \) and \( \mathcal{B}(\mathbb{R}^\mathbf{N}) = \left\{ (\omega_1, \omega_2, \cdots) : \omega_i \in \mathcal{B}(\mathbb{R}) \right\} \)
     \end{block}
 
+    \vspace{0.3cm}
+
+    In \cite{Durrett2019-gs}, theorem is not complete to use in our senario because \(P\) defines on countable index set \(\mathbf{N}\).
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Countable vs.\ Uncountable Domains}
+
+    \begin{exampleblock}{Question}
+        What are the characteristics of modeling on countable vs uncountable domains?
+    \end{exampleblock}
+
+    \begin{block}{Definition: Sample path \cite{Le-Gall2016-ik}}
+        Let \((X_t)_{t \in \mathcal{X}} \) be a random process with values in \(E\). The \emph{sample paths of \(X\)} are the mappings \( \mathcal{X} \ni t \mapsto X_t(\omega) \) obtained when fixing \( \omega \in \Omega \). The sample paths of \(X\) is thus form a collection of mappings from \(\mathcal{X}\) into \(E\) indexed by \(\omega \in \Omega\).
+    \end{block}
+
+    \vspace{0.3cm}
+    \textbf{Countable infinite domain} (e.g., $\mathcal{X} = \mathbb{Z}$):
+    \begin{itemize}
+        \item GP reduces to specifying consistent MVN distributions on all finite subsets
+        \item Sample paths are sequences $\{f(x_i)\}_{i=1}^\infty$
+        \item No notion of ``continuity'' in the classical sense
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Countable vs.\ Uncountable Domains}
+
+    \begin{exampleblock}{Question}
+        What are the characteristics of modeling on countable vs uncountable domains?
+    \end{exampleblock}
+
+    \begin{block}{Definition: Sample path \cite{Le-Gall2016-ik}}
+        Let \((X_t)_{t \in \mathcal{X}} \) be a random process with values in \(E\). The \emph{sample paths of \(X\)} are the mappings \( \mathcal{X} \ni t \mapsto X_t(\omega) \) obtained when fixing \( \omega \in \Omega \). The sample paths of \(X\) is thus form a collection of mappings from \(\mathcal{X}\) into \(E\) indexed by \(\omega \in \Omega\).
+    \end{block}
+
     \vspace{0.2cm}
-    For GPs, consistency is automatically satisfied because the MVN satisfies them (the marginal of a MVN is MVN with the corresponding submatrix of the covariance).
+    \textbf{Uncountable infinite domain} (e.g., $\mathcal{X} = \mathbb{R}^d$):
+    \begin{itemize}
+        \item Sample paths are actual functions
+        \item Continuity, differentiability become meaningful properties
+        \item Requires careful treatment (measurability issues, sample path properties)
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+
+\begin{frame}{Kolmogorov Extension Theorem: The Foundation}
+    \begin{exampleblock}{Question}
+        What is the \emph{consistency} property in Kolmogorov's Extension Theorem?
+    \end{exampleblock}
+
+    \begin{block}{Kolmogorov's Extension Theorem : Stochastic process ver. \cite{Oksendal2003-nf}}
+        For all $t_1, \ldots, t_k \in T$, $k \in \mathbb{N}$ let $\nu_{t_1,\ldots,t_k}$ be probability measures on $\mathbb{R}^{nk}$ s.t.
+
+        \begin{equation}
+            \nu_{t_{\sigma(1)},\ldots,t_{\sigma(k)}}(F_1 \times \cdots \times F_k) = \nu_{t_1,\ldots,t_k}(F_{\sigma^{-1}(1)} \times \cdots \times F_{\sigma^{-1}(k)})
+            \tag{K1}
+        \end{equation}
+
+        for all permutations $\sigma$ on $\{1, 2, \ldots, k\}$ and
+
+        \begin{equation}
+            \nu_{t_1,\ldots,t_k}(F_1 \times \cdots \times F_k) = \nu_{t_1,\ldots,t_k,t_{k+1},\ldots,t_{k+m}}(F_1 \times \cdots \times F_k \times \mathbb{R}^n \times \cdots \times \mathbb{R}^n)
+            \tag{K2}
+        \end{equation}
+
+        for all $m \in \mathbb{N}$.
+    \end{block}
+\end{frame}
+
+%------------------------------------------------
+
+
+\begin{frame}{Kolmogorov Extension Theorem: The Foundation}
+    \begin{block}{Kolmogorov's Extension Theorem : Stochastic process ver. (cont.) \cite{Oksendal2003-nf}}
+        Then there exists a probability space $(\Omega, \mathcal{F}, P)$ and a stochastic process $\{X_t\}$ on $\Omega$, $X_t: \Omega \to \mathbb{R}^n$, s.t.
+
+        \[
+            \nu_{t_1,\ldots,t_k}(F_1 \times \cdots \times F_k) = P[X_{t_1} \in F_1, \cdots, X_{t_k} \in F_k],
+        \]
+
+        for all $t_i \in T$, $k \in \mathbb{N}$ and all Borel sets $F_i$.
+    \end{block}
+
+    \vspace{0.3cm}
+    \textbf{Consistency Conditions:}
+    \begin{enumerate}
+        \item \textbf{Permutation invariance} (K1): The joint distribution is unchanged by reordering indices
+        \item \textbf{Marginalization consistency} (K2): If $\mathbf{x} \subset \mathbf{x}'$, then marginalizing $p(\bm{\phi}' \mid \mathbf{x}')$ over $\bm{\phi}' \setminus \bm{\phi}$ yields $p(\bm{\phi} \mid \mathbf{x})$
+    \end{enumerate}
+
+    \vspace{0.2cm}
+    For GPs, these are automatically satisfied because the MVN satisfies them (the marginal of a MVN is MVN with the corresponding submatrix of the covariance).
 \end{frame}
 
 %------------------------------------------------
@@ -230,6 +329,23 @@
     \end{itemize}
 
     The covariance function must be \alert{symmetric} and \alert{positive semidefinite}.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Extension from Countable Dense Subsets}
+    \begin{exampleblock}{Question}
+        If $f$ is a.s.\ continuous and $D \subset \mathcal{X}$ is countable dense, can $p(f \mid D)$ determine $p(f)$?
+    \end{exampleblock}
+
+    \begin{proof}
+        Let \( f \) and \( g \) be two continuous functions on \( \mathcal{X} \). Suppose they agree on a dense subset \( D \subseteq \mathcal{X} \). For any \( x \in \mathcal{X} \), there exists a sequence \( \{q_n\} \subset D \) such that \( q_n \to x \). By continuity,
+        \[
+            f(x) = f(\lim_{n \to \infty} q_n) = \lim_{n \to \infty} f(q_n) = \lim_{n \to \infty} g(q_n) = g(\lim_{n \to \infty} q_n) = g(x)
+        \]
+        Thus, \( f(x) = g(x) \) for all \( x \in \mathcal{X} \).
+        Since sample paths are a.s.\ continuous, the process is uniquely determined by its values on \( D \).
+    \end{proof}
 \end{frame}
 
 %------------------------------------------------
@@ -323,6 +439,47 @@
         \item $p(\mathbf{y}) = \mathcal{N}(\mathbf{y}; \mathbf{m}, \mathbf{C})$ : marginal distribution of observations
         \item $\bm{\kappa}(x) = \text{cov}[\mathbf{y}, \phi \mid x]$ : cross-covariance function
     \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: What Observations $\mathbf{y}$ Are Jointly Gaussian with $f$?}
+    \begin{exampleblock}{Question}
+        Besides function values, what else can $\mathbf{y}$ be?
+    \end{exampleblock}
+
+    \vspace{0.3cm}
+    Any of the following are jointly Gaussian with a GP:
+    \begin{itemize}
+        \item Function values: $\mathbf{y} = f(\mathbf{x})$ (the basic case)
+        \item Affine transformations: $\mathbf{y} = \mathbf{A} f(\mathbf{x}) + \mathbf{b}$
+        \item Limits of affine transformations:
+              \begin{itemize}
+                  \item Partial derivatives: $\frac{\partial f}{\partial x_i}(x)$
+                  \item Integrals/expectations: $\int f(x) p(x) dx$
+              \end{itemize}
+        \item Any of the above + independent Gaussian noise
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: What Observations $\mathbf{y}$ Are Jointly Gaussian with $f$?}
+    \begin{exampleblock}{Question}
+        Besides function values, what else can $\mathbf{y}$ be?
+    \end{exampleblock}
+
+    \textbf{Other examples}: Based on linear (affine) operator, these are joint Gaussian distribution.
+
+    \begin{itemize}
+        \item Line/Path Integral Observations \cite{Sarkka2011-vy}
+              \[\mathbf{y} = \int_\gamma f(x) \, ds + \bm{\varepsilon}, \quad \bm{\kappa}(x') = \int_\gamma K(x, x') \, ds\]
+              \small Used at Tomographic reconstruction (CT/MRI), Measure expected path of moving sensor
+        \item Convolved/Smoothed Observations by smoothing kernel $G$ \cite{Alvarez2011-vl}
+              \[\mathbf{y} = (f * G)(x_0) = \int f(x') G(x_0 - x') \, dx', \quad \bm{\kappa}(x) = \int G(x_0 - x') K(x', x) \, dx'\]
+              \small Used at Sensor spatial averaging, image blur (PSF), multi-output GP via convolution
+    \end{itemize}
+
 \end{frame}
 
 %------------------------------------------------
@@ -444,6 +601,52 @@
 
 %------------------------------------------------
 
+\begin{frame}{Q\&A: Differential Entropy as Global Uncertainty}
+    \begin{exampleblock}{Question}
+        Why is differential entropy a measure of global uncertainty?
+    \end{exampleblock}
+
+    \vspace{0.3cm}
+    \begin{block}{Definition: Differential Entropy}
+        For a random variable $\omega$ with density $p(\omega)$, \emph{differential entropy} is defined as:
+        \[
+            H[\omega] = -\int p(\omega) \log p(\omega) \, d\omega
+        \]
+    \end{block}
+
+    \textbf{Interpretation}:
+    \begin{itemize}
+        \item Measures the ``spread'' or ``uncertainty'' in the distribution
+        \item Higher entropy $\Rightarrow$ more uncertain (flatter distribution)
+        \item For Gaussian: $H[\mathcal{N}(\mu, \sigma^2)] = \frac{1}{2}\log(2\pi e \sigma^2)$
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Differential Entropy as Global Uncertainty}
+    \begin{exampleblock}{Question}
+        Why is differential entropy a measure of global uncertainty?
+    \end{exampleblock}
+
+    \vspace{0.3cm}
+    \begin{block}{Definition: Differential Entropy}
+        For a random variable $\omega$ with density $p(\omega)$, \emph{differential entropy} is defined as:
+        \[
+            H[\omega] = -\int p(\omega) \log p(\omega) \, d\omega
+        \]
+    \end{block}
+
+    \vspace{0.2cm}
+    \textbf{For GPs}: The joint differential entropy of function values at $\mathbf{x}$ is:
+    \[
+        H[\bm{\phi} \mid \mathbf{x}] = \frac{1}{2}\log|2\pi e \, K(\mathbf{x}, \mathbf{x})|
+    \]
+    Observations \textit{reduce} this entropy: $|K_\mathcal{D}(\mathbf{x}, \mathbf{x})| \leq |K(\mathbf{x}, \mathbf{x})|$.
+\end{frame}
+
+%------------------------------------------------
+
 \begin{frame}{Posterior Predictive Distribution}
     For the latent function value $\phi = f(x)$:
     \[
@@ -475,9 +678,6 @@
         \item \textbf{\S 2.7 Existence/Uniqueness of Global Maxima}: Theoretical guarantees
         \item \textbf{\S 2.8 Non-Gaussian Observations}: Approximate inference methods
     \end{itemize}
-
-    \vspace{0.3cm}
-    \alert{Key takeaway}: Sections 2.1--2.2 provide sufficient foundation for most practical Bayesian optimization applications!
 \end{frame}
 
 %------------------------------------------------
@@ -494,6 +694,30 @@
     \begin{block}{Key Idea}
         ``Paste together'' multiple functions into a single function on a larger domain, then construct a standard GP on this combined function.
     \end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Why Disjoint Union for Joint GP Domains?}
+    \begin{block}{Question}
+        Is disjoint union the standard way to define joint GP domains?
+    \end{block}
+
+    \vspace{0.3cm}
+    Yes, mathematically this is the cleanest approach:
+    \[
+        \bigsqcup f: \mathcal{X} = \bigsqcup_i \mathcal{X}_i \to \mathbb{R}, \quad \text{where } (\bigsqcup f)|_{\mathcal{X}_i} \equiv f_i
+    \]
+
+    \textbf{Why disjoint union?}
+    \begin{itemize}
+        \item Ensures each point $(x, i)$ uniquely identifies \textit{which} function
+        \item Even if $\mathcal{X}_1 = \mathcal{X}_2 = [0, 1]$, we distinguish $f_1(0.5)$ from $f_2(0.5)$
+        \item The kernel can then define both within-function and cross-function covariance
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \textbf{Alternative}: If functions share a domain and we want $f(x) \approx g(x)$, we can use a \textit{separable} kernel structure without explicit disjoint union.
 \end{frame}
 
 %------------------------------------------------
@@ -545,6 +769,31 @@
 
 %------------------------------------------------
 
+\begin{frame}{Q\&A: Designing Cross-Covariance Functions}
+    \begin{exampleblock}{Question}
+        How do we choose the cross-covariance function $K_{fg}$?
+    \end{exampleblock}
+
+    \vspace{0.3cm}
+    \textbf{Common approaches}:
+    \begin{enumerate}
+        \item \textbf{Scaled base kernel}: $K_{fg}(x, x') = \rho \cdot K(x, x')$ where $|\rho| < 1$
+              \begin{itemize}
+                  \item Simple, interpretable: $\rho$ is the correlation at any point
+              \end{itemize}
+        \item \textbf{Linear Model of Coregionalization (LMC)}:
+              \[
+                  K_{fg}(x, x') = \sum_{q=1}^Q a_q^{(f)} a_q^{(g)} K_q(x, x')
+              \]
+        \item \textbf{Convolution processes}: Define via convolution with a smoothing kernel
+    \end{enumerate}
+
+    \vspace{0.2cm}
+    \textbf{Constraint}: The full covariance matrix must remain positive semidefinite!
+\end{frame}
+
+%------------------------------------------------
+
 \begin{frame}{Example: Correlated Functions}
     \begin{center}
         \begin{figure}
@@ -578,6 +827,32 @@
 
     \vspace{0.3cm}
     \textbf{Consequence}: Samples from the joint distribution show strong coupling, the functions ``move together.''
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Domain Size and Function Influence in Joint GPs}
+    \begin{exampleblock}{Question}
+        Can domain size differences affect function influence in joint GPs?
+    \end{exampleblock}
+
+    \vspace{0.3cm}
+    Yes, this is a real concern in practice!
+
+    \begin{itemize}
+        \item Function with more observations may dominate inference
+        \item Different scales of domains may require different length scales
+        \item Numerical conditioning can suffer from imbalanced data
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \textbf{Mitigation strategies}:
+    \begin{enumerate}
+        \item \textbf{Output scaling}: Normalize each function to similar variance
+        \item \textbf{Separate length scales}: Use ARD-style kernels for each function
+        \item \textbf{Weighted likelihoods}: Down-weight abundant data sources
+        \item \textbf{Hierarchical priors}: Place priors on correlation parameters
+    \end{enumerate}
 \end{frame}
 
 %------------------------------------------------
