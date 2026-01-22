@@ -339,11 +339,11 @@
     \end{exampleblock}
 
     \begin{proof}
-        Let \( f \) and \( g \) be two continuous functions on \( \mathcal{X} \). Suppose they agree on a dense subset \( D \subseteq \mathcal{X} \). For any \( x \in \mathcal{X} \), there exists a sequence \( \{q_n\} \subset D \) such that \( q_n \to x \). By continuity,
+        Let \( f \) and \( g \) be two continuous functions on \( \mathcal{X} \). Suppose \(f(x) = g(x)\) for \(\forall x \in D \). For any \( x \in \mathcal{X} \), there exists a sequence \( \{q_n\} \subset D \) such that \( q_n \to x \). (\(\because D\) is dense in \(\mathcal{X}\)) By continuity,
         \[
             f(x) = f(\lim_{n \to \infty} q_n) = \lim_{n \to \infty} f(q_n) = \lim_{n \to \infty} g(q_n) = g(\lim_{n \to \infty} q_n) = g(x)
         \]
-        Thus, \( f(x) = g(x) \) for all \( x \in \mathcal{X} \).
+        Thus, \( f(x) = g(x), \forall x \in \mathcal{X} \).
         Since sample paths are a.s.\ continuous, the process is uniquely determined by its values on \( D \).
     \end{proof}
 \end{frame}
@@ -529,7 +529,7 @@
 %------------------------------------------------
 
 \begin{frame}{Inference with Exact Function Evaluations}
-    Suppose we observe $f$ at locations $\mathbf{x}$, revealing $\bm{\phi} = f(\mathbf{x})$.
+    Suppose we observe $f$ at locations $\mathbf{x}$, revealing $\bm{\phi} = f(\mathbf{x})$. We know that \( p(\bm{\phi} | \mathbf{x}) = \mathcal{N}(\bm{\phi} ; \bm{\mu}, \bm{\Sigma}) \) so \(\kappa(x) = \text{cov} [\bm{\phi}, \phi | \mathbf{x}, x] \).
 
     \vspace{0.3cm}
     The posterior is $p(f \mid \mathcal{D}) = \mathcal{GP}(f; \mu_{\mathcal{D}}, K_{\mathcal{D}})$ with:
@@ -575,6 +575,17 @@
 
 %------------------------------------------------
 
+\begin{frame}{Inference with Noisy Function Evaluations}
+    \begin{center}
+        \begin{figure}
+            \includegraphics[width = 11cm]{figure/fig-3-GP-moskedastic-noise.png}
+            \caption{Conditioning GP on data corrupted by increasing levels of homoskedastic noise \cite{Garnett2023-gc}}
+        \end{figure}
+    \end{center}
+\end{frame}
+
+%------------------------------------------------
+
 \begin{frame}{Interpretation of Posterior Moments}
     Consider a single observation $y$ with distribution $\mathcal{N}(y; m, s^2)$ and define:
     \begin{itemize}
@@ -601,25 +612,25 @@
 
 %------------------------------------------------
 
-\begin{frame}{Q\&A: Differential Entropy as Global Uncertainty}
-    \begin{exampleblock}{Question}
-        Why is differential entropy a measure of global uncertainty?
-    \end{exampleblock}
-
-    \vspace{0.3cm}
-    \begin{block}{Definition: Differential Entropy}
-        For a random variable $\omega$ with density $p(\omega)$, \emph{differential entropy} is defined as:
-        \[
-            H[\omega] = -\int p(\omega) \log p(\omega) \, d\omega
-        \]
-    \end{block}
-
-    \textbf{Interpretation}:
+\begin{frame}{Interpretation of Posterior Moments: Vector Case}
+    For vector-valued observations $\mathbf{y}$, factor the covariance as $C = SPS$ where:
     \begin{itemize}
-        \item Measures the ``spread'' or ``uncertainty'' in the distribution
-        \item Higher entropy $\Rightarrow$ more uncertain (flatter distribution)
-        \item For Gaussian: $H[\mathcal{N}(\mu, \sigma^2)] = \frac{1}{2}\log(2\pi e \sigma^2)$
+        \item $S$: diagonal with $S_{ii} = \sqrt{C_{ii}} = \text{std}[y_i]$
+        \item $P = \text{corr}[\mathbf{y}]$: observation correlation matrix
     \end{itemize}
+
+    Define vectors of $z$-scores and cross-correlations:
+    \[
+        z_i = \frac{y_i - m_i}{s_i}, \quad \rho_i = \frac{[\kappa(x)]_i}{\sigma s_i}
+    \]
+
+    \begin{alertblock}{Posterior Moments (Vector Case)}
+        \vspace{-0.5cm}
+        \begin{align*}
+            \text{Posterior mean of } \phi & : \mu + \sigma \bm{\rho}^\top P^{-1} \mathbf{z}     \\
+            \text{Posterior std of } \phi  & : \sigma \sqrt{1 - \bm{\rho}^\top P^{-1} \bm{\rho}}
+        \end{align*}
+    \end{alertblock}
 \end{frame}
 
 %------------------------------------------------
@@ -636,13 +647,57 @@
             H[\omega] = -\int p(\omega) \log p(\omega) \, d\omega
         \]
     \end{block}
+    \textbf{For Gaussian distributions}:
+    \begin{itemize}
+        \item Univariate: $H[\mathcal{N}(\mu, \sigma^2)] = \frac{1}{2}\log(2\pi e \sigma^2)$
+        \item Multivariate: $H[\mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})] = \frac{1}{2}\log|2\pi e \boldsymbol{\Sigma}|$
+    \end{itemize}
 
     \vspace{0.2cm}
-    \textbf{For GPs}: The joint differential entropy of function values at $\mathbf{x}$ is:
+    \textbf{For GPs}: The joint entropy of function values at locations $\mathbf{x}$ is:
     \[
-        H[\bm{\phi} \mid \mathbf{x}] = \frac{1}{2}\log|2\pi e \, K(\mathbf{x}, \mathbf{x})|
+        H[\boldsymbol{\phi} \mid \mathbf{x}] = \frac{1}{2}\log|2\pi e \, K(\mathbf{x}, \mathbf{x})|
     \]
-    Observations \textit{reduce} this entropy: $|K_\mathcal{D}(\mathbf{x}, \mathbf{x})| \leq |K(\mathbf{x}, \mathbf{x})|$.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Why Differential Entropy Measures Global Uncertainty}
+    \textbf{Key insight}: Entropy depends on the \alert{determinant of the covariance matrix}.
+
+    \vspace{0.2cm}
+    \textbf{Why ``Global''?}
+    \begin{itemize}
+        \item Marginal variance $\sigma_i^2 = \Sigma_{ii}$: uncertainty of \alert{individual} variables
+        \item Determinant $|\boldsymbol{\Sigma}|$: \textbf{joint} uncertainty of \alert{all} variables together
+        \item Also reflects correlations: high correlation $\Rightarrow$ smaller $|\boldsymbol{\Sigma}|$
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Q\&A: Entropy Reduction in the Posterior}
+    \textbf{Prior vs Posterior Covariance}:
+    \begin{align*}
+        \text{Prior}:     & \quad K(\mathbf{x}, \mathbf{x})                                                                                             \\
+        \text{Posterior}: & \quad K_\mathcal{D}(\mathbf{x}, \mathbf{x}) = K(\mathbf{x}, \mathbf{x}) - \kappa(\mathbf{x})^\top C^{-1} \kappa(\mathbf{x})
+    \end{align*}
+
+    \vspace{0.2cm}
+    \begin{alertblock}{Global Uncertainty Reduction}
+        For positive semidefinite matrices $A, B$: $|A| \leq |A + B|$, hence:
+        \[
+            \boxed{|K_\mathcal{D}(\mathbf{x}, \mathbf{x})| \leq |K(\mathbf{x}, \mathbf{x})|}
+        \]
+        Therefore, posterior entropy is \textbf{always $\leq$ prior entropy}.
+    \end{alertblock}
+
+    \vspace{0.2cm}
+    \textbf{Interpretation}:
+    \begin{itemize}
+        \item Independent observations ($\bm{\rho} = 0$): no entropy change
+        \item More precise observations (larger $C^{-1}$): greater entropy reduction $\Rightarrow$ more information gained
+    \end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -694,30 +749,6 @@
     \begin{block}{Key Idea}
         ``Paste together'' multiple functions into a single function on a larger domain, then construct a standard GP on this combined function.
     \end{block}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{Q\&A: Why Disjoint Union for Joint GP Domains?}
-    \begin{block}{Question}
-        Is disjoint union the standard way to define joint GP domains?
-    \end{block}
-
-    \vspace{0.3cm}
-    Yes, mathematically this is the cleanest approach:
-    \[
-        \bigsqcup f: \mathcal{X} = \bigsqcup_i \mathcal{X}_i \to \mathbb{R}, \quad \text{where } (\bigsqcup f)|_{\mathcal{X}_i} \equiv f_i
-    \]
-
-    \textbf{Why disjoint union?}
-    \begin{itemize}
-        \item Ensures each point $(x, i)$ uniquely identifies \textit{which} function
-        \item Even if $\mathcal{X}_1 = \mathcal{X}_2 = [0, 1]$, we distinguish $f_1(0.5)$ from $f_2(0.5)$
-        \item The kernel can then define both within-function and cross-function covariance
-    \end{itemize}
-
-    \vspace{0.2cm}
-    \textbf{Alternative}: If functions share a domain and we want $f(x) \approx g(x)$, we can use a \textit{separable} kernel structure without explicit disjoint union.
 \end{frame}
 
 %------------------------------------------------
@@ -781,7 +812,7 @@
               \begin{itemize}
                   \item Simple, interpretable: $\rho$ is the correlation at any point
               \end{itemize}
-        \item \textbf{Linear Model of Coregionalization (LMC)}:
+        \item \textbf{Linear Model of Coregionalization (LMC)} \cite{Alvarez2011-vl}:
               \[
                   K_{fg}(x, x') = \sum_{q=1}^Q a_q^{(f)} a_q^{(g)} K_q(x, x')
               \]
@@ -831,6 +862,30 @@
 
 %------------------------------------------------
 
+\begin{frame}{Q\&A: Why Disjoint Union for Joint GP Domains?}
+    \begin{exampleblock}{Question}
+        Is disjoint union the standard way to define joint GP domains?
+    \end{exampleblock}
+
+    \vspace{0.3cm}
+    Yes, mathematically this is the cleanest approach:
+    \[
+        \bigsqcup f: \mathcal{X} = \bigsqcup_i \mathcal{X}_i \to \mathbb{R}, \quad \text{where } (\bigsqcup f)|_{\mathcal{X}_i} \equiv f_i
+    \]
+
+    \textbf{Why disjoint union?}
+    \begin{itemize}
+        \item Ensures each point $(x, i)$ uniquely identifies \textit{which} function
+        \item In previous example, if $\mathcal{X}_1 = \mathcal{X}_2 = [0, 30]$, we distinguish $f(10)$ from $g(10)$
+              \begin{itemize}
+                  \item 엄밀하게는 multi-output GP
+              \end{itemize}
+        \item The kernel can then define both within-function and cross-function covariance
+    \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
 \begin{frame}{Q\&A: Domain Size and Function Influence in Joint GPs}
     \begin{exampleblock}{Question}
         Can domain size differences affect function influence in joint GPs?
@@ -849,7 +904,6 @@
     \textbf{Mitigation strategies}:
     \begin{enumerate}
         \item \textbf{Output scaling}: Normalize each function to similar variance
-        \item \textbf{Separate length scales}: Use ARD-style kernels for each function
         \item \textbf{Weighted likelihoods}: Down-weight abundant data sources
         \item \textbf{Hierarchical priors}: Place priors on correlation parameters
     \end{enumerate}
@@ -872,27 +926,6 @@
 
     \vspace{0.3cm}
     This is particularly useful for \alert{multifidelity optimization}: cheap surrogate evaluations inform our belief about the expensive objective.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}{Extension to Vector-Valued Functions}
-    A GP on a vector-valued function $\mathbf{f}: \mathcal{X} \to \mathbb{R}^d$ is defined by a joint GP on its coordinate functions $\{f_i\}: \mathcal{X} \to \mathbb{R}$.
-
-    \vspace{0.3cm}
-    Notation: $\mathcal{GP}(\mathbf{f}; \mu, K)$ where:
-    \begin{itemize}
-        \item $\mu: \mathcal{X} \to \mathbb{R}^d$ (vector-valued mean)
-        \item $K: \mathcal{X} \times \mathcal{X} \to \mathbb{R}^{d \times d}$ (matrix-valued covariance)
-    \end{itemize}
-
-    \vspace{0.3cm}
-    \textbf{Applications:}
-    \begin{itemize}
-        \item Joint distribution of $f$ and $\nabla f$ (gradient)
-        \item Multiobjective optimization with correlated objectives
-        \item Modeling spatial vector fields
-    \end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -919,7 +952,7 @@
 
 %------------------------------------------------
 
-\begin{frame}{References}
+\begin{frame}[allowframebreaks]{References}
     \footnotesize
     \bibliography{ref.bib}
     \bibliographystyle{apalike}
