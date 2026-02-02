@@ -719,6 +719,28 @@
 \end{frame}
 
 %------------------------------------------------
+
+\begin{frame}{Q\&A: Information Theoretic Interpretation}
+    \begin{exampleblock}{Question}
+        Why does differential \textbf{entropy represent uncertainty}?
+    \end{exampleblock}
+
+    \vspace{0.3cm}
+    \textbf{Definition of Entropy}:
+    \begin{itemize}
+        \item Entropy is defined as the \alert{expected surprise} (or information content)
+        \item \textbf{Intuition}:
+              \begin{itemize}
+                  \item If an event is certain ($p(x) \approx 1$), surprise is 0.
+                  \item If events are unpredictable, surprise is high.
+              \end{itemize}
+    \end{itemize}
+
+    \vspace{0.2cm}
+    Therefore, regardless of whether it is discrete or differential, \textbf{higher entropy} fundamentally implies \textbf{higher uncertainty} about the random variable's outcome.
+\end{frame}
+
+%------------------------------------------------
 \section{Joint Gaussian Processes}
 %------------------------------------------------
 
@@ -875,11 +897,11 @@
 
     \textbf{Why disjoint union?}
     \begin{itemize}
-        \item Ensures each point $(x, i)$ uniquely identifies \textit{which} function
-        \item In previous example, if $\mathcal{X}_1 = \mathcal{X}_2 = [0, 30]$, we distinguish $f(10)$ from $g(10)$
+        \item Ensures each point $(x, i)$ uniquely identifies \textit{which} function (Check ref 22 in book)
               \begin{itemize}
-                  \item 엄밀하게는 multi-output GP
+                  \item A disjoint union represents a point $x \in \mathcal{X}_i$ by the pair $(x, i)$, thereby combining the domains while retaining their identities.
               \end{itemize}
+        \item In previous example, if $\mathcal{X}_1 = \mathcal{X}_2 = [0, 30]$, we distinguish $f(10)$ from $g(10)$ by index $i$
         \item The kernel can then define both within-function and cross-function covariance
     \end{itemize}
 \end{frame}
