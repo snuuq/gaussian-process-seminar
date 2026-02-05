@@ -10,9 +10,9 @@
 | 1/22 | Ch2. Gaussian Process (~ 2.4)                  | 박성우 |
 | 1/29 | Ch2. Gaussian Process (2.5 ~)        | 최윤서 |
 | 2/5 | Ch3. Modeling with Gaussian Process                | 고명금 |
-| 2/12 | Ch4. Model assessment, Selection, and Averaging | 고경태 |
+| 2/12 | Ch4. Model assessment, Selection, and Averaging | 윤다연 |
 | 2/19 | Ch5. Decision Theory for optimization    | 김지광 |
-| 2/26 | Ch6. Utility functions for optimization + Ch7. Common Bayesian Optimiation Policies (~ 7.5) | 윤다연 |
+| 2/26 | Ch6. Utility functions for optimization + Ch7. Common Bayesian Optimiation Policies (~ 7.5) | 고경태 |
 | 3/5 | Ch7. Common Bayesian Optimiation Policies (7.6 ~ )   | 이혜림 |
 
 > 추후 진도 사항에 따라 일정이 변경될 수 있습니다.
