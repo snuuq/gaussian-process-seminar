@@ -1,0 +1,13 @@
+labels: []
+body:
+  - type: textarea
+    id: improvements
+    attributes:
+      label: "Information"
+      value: |
+        담당자:
+        필수 질문 마감기한 : ~
+        궁금한점에 대해서 질문을 하단에 남겨주세요.
+      render: bash
+    validations:
+      required: true
