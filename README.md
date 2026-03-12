@@ -62,12 +62,13 @@ git push origin main
 
 ## 참가자
 - [김지광](https://github.com/wlrhkd1230)
-- [고명금]()
-- [고경태]()
+- [고명금](https://github.com/goariee)
+- [고경태](https://github.com/Kogo0813)
 - [박성우](https://github.com/cos18)
 - [변희준](https://github.com/ryanb01)
 - [윤다연](https://github.com/Dayeon-Yoon)
 - [이혜림](https://github.com/2hyerim)
-- [조건우]()
+- [조건우](https://github.com/aiden2978)
 - [최윤서](https://github.com/cys0220)
+- [황주영](https://github.com/cauchy305)
 
